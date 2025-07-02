@@ -4,7 +4,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#define QMC6309_I2C_ADDR 0x7C // 7-bit I2C Address
+
+#define QMC6309_I2C_ADDR 0x7C
 
 // Register Mapping Address
 
@@ -35,28 +36,29 @@
 #define QMC6309_ODR_200HZ 0x04
 
 // RNG Full scale
-#define QMC6309_RANGE_32G 0x00 // Actually 32 Gauss max
+#define QMC6309_RANGE_32G 0x00  // Actually 32 Gauss max
 #define QMC6309_RANGE_8G 0x02
 
 // Status register bits
 #define QMC6309_STATUS_DRDY 0x01
 #define QMC6309_STATUS_OVL 0x02
 
-class PCBCUPID_QMC6309
-{
+class PCBCUPID_QMC6309 {
 public:
-    PCBCUPID_QMC6309(TwoWire &w = Wire);
-
-    bool begin();
-    void reset();
-    void setMode(uint8_t mode, uint8_t odr = QMC6309_ODR_200HZ);
-    bool readRaw(int16_t &x, int16_t &y, int16_t &z);
-    uint8_t readChipID();
+  PCBCUPID_QMC6309(TwoWire &wire);
+  bool begin();
+  bool readRaw(int16_t &x, int16_t &y, int16_t &z);
+  uint8_t readChipID();
+  void dumpRegisters();
 
 private:
-    TwoWire *_wire;
-    void writeRegister(uint8_t reg, uint8_t val);
-    uint8_t readRegister(uint8_t reg);
+  void reset();
+  void setMode(uint8_t mode, uint8_t odr);
+  void writeRegister(uint8_t reg, uint8_t val);
+  uint8_t readRegister(uint8_t reg);
+
+  TwoWire *_wire;
+  
 };
 
 #endif

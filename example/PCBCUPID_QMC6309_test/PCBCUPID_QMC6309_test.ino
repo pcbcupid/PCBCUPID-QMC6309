@@ -1,26 +1,27 @@
-#include "PCBCUPID_QMC6309.h"
 #include <Wire.h>
+#include "PCBCUPID_QMC6309.h"
 
 PCBCUPID_QMC6309 mag(Wire);
 
 void setup() {
   Serial.begin(115200);
-  delay(100);
+  delay(1000);
+  Serial.println("QMC6309 Test");
 
-  Wire.begin(4, 5);
-
-  uint8_t chipId = mag.readChipID();
-  Serial.print("Chip ID: 0x");
-  Serial.println(chipId, HEX);
-  if (chipId == 0x90) {
-    Serial.println("Chip ID found");
-    mag.reset();
-    Serial.println("Soft reset complete");
-    mag.setMode(QMC6309_MODE_CONTINUOUS, QMC6309_ODR_50HZ);
-  } else {
-    Serial.println("Chip ID not found");
+  if (!mag.begin()) {
+    Serial.println("QMC6309 initialization failed!");
+    while (1);
   }
+
+  Serial.println("QMC6309 initialized successfully.");
 }
 
 void loop() {
+  int16_t x, y, z;
+  if (mag.readRaw(x, y, z)) {
+    // Already printed inside readRaw
+  } else {
+    Serial.println("Failed to read raw data");
+  }
+  delay(500);
 }
