@@ -77,7 +77,7 @@ HeadingSmoother smoother(0.2);  // Smoothing factor 0.2
 
 const float x_offset = 3485.0;
 const float y_offset = 1290.0;
-const float declination = 0.22;  // Chennai declination in radians
+const float declination = 0.22;  //  declination in radians
 
 void setup() {
   Serial.begin(115200);
