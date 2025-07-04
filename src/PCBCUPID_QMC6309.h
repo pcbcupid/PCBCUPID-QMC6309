@@ -49,7 +49,12 @@ public:
   bool begin();
   bool readRaw(int16_t &x, int16_t &y, int16_t &z);
   uint8_t readChipID();
-  void dumpRegisters();
+  float getHeading();
+  const char *headingToDirection(float heading);
+  void convertToMicroTesla(int16_t xRaw, int16_t yRaw, int16_t zRaw, float &x_uT, float &y_uT, float &z_uT);
+  void setOffsets(int16_t x_off, int16_t y_off);
+  void getCalibrated(int16_t xRaw, int16_t yRaw, int16_t zRaw, float &xCorr, float &yCorr);
+
 
 private:
   void reset();
@@ -57,8 +62,12 @@ private:
   void writeRegister(uint8_t reg, uint8_t val);
   uint8_t readRegister(uint8_t reg);
 
+  int16_t xOffset, yOffset;  // Calibration offsets
+  int16_t xMin = 32767, xMax = -32768;
+  int16_t yMin = 32767, yMax = -32768;
+  int16_t zMin = 32767, zMax = -32768;
+
   TwoWire *_wire;
-  
 };
 
 #endif
